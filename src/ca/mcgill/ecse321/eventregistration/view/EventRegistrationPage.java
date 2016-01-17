@@ -40,8 +40,6 @@ public class EventRegistrationPage extends JFrame {
 		errorMessage = new JLabel();
 		errorMessage.setForeground(Color.RED);
 		
-		
-		
 		// elements for participant
 		participantNameTextField = new JTextField();
 		participantNameLabel = new JLabel();
@@ -65,7 +63,7 @@ public class EventRegistrationPage extends JFrame {
 		layout.setAutoCreateGaps(true);
 		layout.setAutoCreateContainerGaps(true);
 		layout.setHorizontalGroup(
-				layout.createSequentialGroup()
+				layout.createParallelGroup()
 				.addComponent(errorMessage)
 				.addGroup(layout.createSequentialGroup()
 				.addComponent(participantNameLabel)
