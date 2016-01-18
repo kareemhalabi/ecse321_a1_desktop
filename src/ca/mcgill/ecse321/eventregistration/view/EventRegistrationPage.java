@@ -1,17 +1,27 @@
 package ca.mcgill.ecse321.eventregistration.view;
 
 import java.awt.Color;
+import java.util.HashMap;
+import java.util.Properties;
 
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 
+import org.jdatepicker.impl.JDatePanelImpl;
+import org.jdatepicker.impl.JDatePickerImpl;
+import org.jdatepicker.impl.SqlDateModel;
+
 import ca.mcgill.ecse321.eventregistration.controller.EventRegistrationController;
 import ca.mcgill.ecse321.eventregistration.controller.InvalidInputException;
+import ca.mcgill.ecse321.eventregistration.model.Event;
+import ca.mcgill.ecse321.eventregistration.model.Participant;
 
 public class EventRegistrationPage extends JFrame {
 
@@ -19,12 +29,30 @@ public class EventRegistrationPage extends JFrame {
 	
 	// UI elements
 	private JLabel errorMessage;
+	private JComboBox<String> participantList;
+	private JLabel participantLabel;
+	private JComboBox<String> eventList;
+	private JLabel eventLabel;
+	private JButton registerButton;
 	private JTextField participantNameTextField;
 	private JLabel participantNameLabel;
 	private JButton addParticipantButton;
+	private JTextField eventNameTextField;
+	private JLabel eventNameLabel;
+	private JDatePickerImpl eventDatePicker;
+	private JLabel eventDateLabel;
+	private JSpinner startTimeSpinner;
+	private JLabel startTimeLabel;
+	private JSpinner endTimeSpinner;
+	private JLabel endTimeLabel;
+	private JButton addEventButton;
 	
 	// data elements
 	private String error = null;
+	private Integer selectedParticipant = -1;
+	private HashMap<Integer, Participant> participants;
+	private Integer selectedEvent = -1;
+	private HashMap<Integer, Event> events;
 	
 	/** Creates new form EventRegistrationPage */
 	public EventRegistrationPage() {
@@ -34,16 +62,49 @@ public class EventRegistrationPage extends JFrame {
 
 	/** This method is called from within the constructor to initialize the form.
 	 */
-	
 	private void initComponents() {
 		// elements for error message
 		errorMessage = new JLabel();
 		errorMessage.setForeground(Color.RED);
 		
+		// elements for registration
+		participantList = new JComboBox<String>(new String[0]);
+		participantList.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				JComboBox<String> cb = (JComboBox<String>) evt.getSource();
+				selectedParticipant = cb.getSelectedIndex();
+			}
+		});
+		participantLabel = new JLabel();
+		eventList = new JComboBox<String>(new String[0]);
+		eventList.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				JComboBox<String> cb = (JComboBox<String>) evt.getSource();
+				selectedEvent = cb.getSelectedIndex();
+			}
+		});
+		eventLabel = new JLabel();
+		
+		registerButton = new JButton();
+		
 		// elements for participant
 		participantNameTextField = new JTextField();
 		participantNameLabel = new JLabel();
 		addParticipantButton = new JButton();
+		
+		// elements for event
+		eventNameTextField = new JTextField();
+		eventNameLabel = new JLabel();
+		
+		SqlDateModel model  = new SqlDateModel();
+		Properties p = new Properties();
+		p.put("text.today", "Today");
+		p.put("text.month", "Month");
+		p.put("text.year", "Year");
+		JDatePanelImpl datePanel = new JDatePanelImpl(model, p);
+		eventDatePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
+		
+		//TODO I stopped here
 		
 		// global settings and listeners
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
