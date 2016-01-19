@@ -26,10 +26,11 @@ public class EventRegistrationController {
 	}
 	
 	public void createEvent(String name, Date date, Time startTime, Time endTime) throws InvalidInputException
-	{
+	{	
+		//TODO Something is wrong here
 		String error = "";
 		if (name == null || name.trim().length() == 0)
-			error = error +"Event name cannot be empty! ";
+			error = error + "Event name cannot be empty! ";
 		if (date == null)
 			error = error + "Event date cannot be empty! ";
 		if (startTime == null)
@@ -39,7 +40,7 @@ public class EventRegistrationController {
 		if (endTime !=null && startTime != null && endTime.getTime()< startTime.getTime())
 			error = error + "Event end time cannot be before event start time!";
 		error = error.trim();
-		if (error.length() >0)
+		if (error.length() > 0)
 			throw new InvalidInputException(error);
 		
 		Event e = new Event(name, date, startTime, endTime);
