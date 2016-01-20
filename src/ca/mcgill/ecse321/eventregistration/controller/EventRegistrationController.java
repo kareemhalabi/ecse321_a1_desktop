@@ -27,7 +27,6 @@ public class EventRegistrationController {
 	
 	public void createEvent(String name, Date date, Time startTime, Time endTime) throws InvalidInputException
 	{	
-		//TODO Something is wrong here
 		String error = "";
 		if (name == null || name.trim().length() == 0)
 			error = error + "Event name cannot be empty! ";
